@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Page
+    x:Class="ProgressButtonDemo.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrls="using:ProgressButtonDemo.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ProgressButtonDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="StackPanel">
+            <Setter Property="BorderBrush" Value="#494949" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Padding" Value="10" />
+            <Setter Property="Spacing" Value="10" />
+        </Style>
+        <SolidColorBrush
+            x:Key="SampleBrush1"
+            Opacity="0.5"
+            Color="#FFFFDF10" />
+        <SolidColorBrush
+            x:Key="SampleBrush2"
+            Opacity="0.5"
+            Color="#FFB200FF" />
+        <SolidColorBrush
+            x:Key="SampleBrush3"
+            Opacity="0.5"
+            Color="#FFF2500F" />
+    </Page.Resources>
+
+    <Grid
+        Margin="40"
+        ColumnDefinitions="*,*"
+        ColumnSpacing="10"
+        RowDefinitions="Auto,Auto,Auto,Auto"
+        RowSpacing="10">
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.Column="0"
+            Orientation="Horizontal">
+            <TextBox
+                x:Name="DataTextBox1"
+                MinWidth="200"
+                Header="RelayCommand Test"
+                IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BooleanInverter}}"
+                Text="{x:Bind ViewModel.DataText1, Mode=TwoWay}" />
+            <ctrls:ProgressButton
+                VerticalAlignment="Bottom"
+                ButtonBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                ButtonCommand="{x:Bind ViewModel.TestCommand}"
+                ButtonCornerRadius="8"
+                ButtonParameter="{x:Bind DataTextBox1.Text, Mode=OneWay}"
+                ButtonText="With Parameter" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="0"
+            Orientation="Horizontal">
+            <TextBox
+                x:Name="DataTextBox2"
+                MinWidth="200"
+                Header="AsyncRelayCommand Test"
+                IsEnabled="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BooleanInverter}}"
+                Text="{x:Bind ViewModel.DataText2, Mode=TwoWay}" />
+            <ctrls:ProgressButton
+                VerticalAlignment="Bottom"
+                ButtonBackgroundBrush="DarkGoldenrod"
+                ButtonBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                ButtonCommand="{x:Bind ViewModel.TestCommandAsync}"
+                ButtonCornerRadius="4"
+                ButtonForegroundBrush="Black"
+                ButtonParameter="{x:Bind DataTextBox2.Text, Mode=OneWay}"
+                ButtonText="With Parameter"
+                ProgressBrush="{StaticResource SampleBrush1}" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="2"
+            Grid.Column="0"
+            Orientation="Horizontal">
+            <ctrls:ProgressButton
+                VerticalAlignment="Bottom"
+                ButtonBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                ButtonCornerRadius="1"
+                ButtonEvent="{x:Bind ViewModel.ButtonClickEvent1, Mode=OneWay}"
+                ButtonText="Click Action Event"
+                ProgressBrush="{StaticResource SampleBrush2}" />
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="0"
+            Orientation="Horizontal">
+            <ctrls:ProgressButton
+                VerticalAlignment="Bottom"
+                ButtonBusy="{x:Bind ViewModel.IsBusy, Mode=OneWay}"
+                ButtonCornerRadius="2"
+                ButtonEvent="{x:Bind ViewModel.ButtonClickEvent2, Mode=OneWay}"
+                ButtonText="Progress Value Test"
+                ProgressBrush="{StaticResource SampleBrush3}"
+                ProgressValue="{x:Bind ViewModel.Amount, Mode=OneWay}" />
+
+        </StackPanel>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.RowSpan="99"
+            Grid.Column="0"
+            Grid.ColumnSpan="99"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            BorderBrush="Transparent"
+            Orientation="Vertical">
+            <!--
+            <ProgressRing
+                Width="90"
+                Height="90"
+                Foreground="SpringGreen"
+                Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BooleanVisibility}, ConverterParameter=False}" />
+            -->
+            <!--
+                Our home-brew spinner:
+            -->
+            <Image
+                Width="60"
+                Height="60"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Opacity="0.8"
+                Source="/Assets/SampleSpinner.png"
+                Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BooleanVisibility}, ConverterParameter=False}">
+                <Image.Resources>
+                    <Storyboard x:Name="StoryboardPath" RepeatBehavior="Forever">
+                        <DoubleAnimation
+                            x:Name="dblAnimation"
+                            Storyboard.TargetName="spinnerTransform"
+                            Storyboard.TargetProperty="Angle"
+                            From="0"
+                            To="360"
+                            Duration="00:00:01.1">
+                            <!--
+                            <DoubleAnimation.EasingFunction>
+                                <CircleEase EasingMode="EaseInOut" />
+                            </DoubleAnimation.EasingFunction>
+                            -->
+                        </DoubleAnimation>
+                    </Storyboard>
+                </Image.Resources>
+                <Image.RenderTransform>
+                    <RotateTransform x:Name="spinnerTransform" CenterX="30" CenterY="30" />
+                </Image.RenderTransform>
+            </Image>
+            <TextBlock
+                FontSize="18"
+                Foreground="WhiteSmoke"
+                Text="{x:Bind ViewModel.Status, Mode=OneWay}" />
+
+            <!--
+                Benefits of using an AsyncRelayCommand:
+            -->
+            <Grid Visibility="{x:Bind ViewModel.IsAsync, Mode=OneWay, Converter={StaticResource BooleanVisibility}, ConverterParameter=False}">
+                <TextBlock>
+                    <Run Foreground="WhiteSmoke" Text="Task id: " />
+                    <Run Foreground="Goldenrod" Text="{x:Bind ViewModel.TestCommandAsync.ExecutionTask.Id, Mode=OneWay}" />
+                    <Run Foreground="WhiteSmoke" Text=" Task completed: " />
+                    <Run Foreground="Goldenrod" Text="{x:Bind ViewModel.TestCommandAsync.ExecutionTask.IsCompleted, Mode=OneWay}" />
+                    <LineBreak />
+                    <Run Foreground="WhiteSmoke" Text="Task status: " />
+                    <Run Foreground="Goldenrod" Text="{x:Bind ViewModel.TestCommandAsync.ExecutionTask.Status, Mode=OneWay}" />
+                    <LineBreak />
+                    <Run Foreground="WhiteSmoke" Text="Result: " />
+                    <Run Foreground="Goldenrod" Text="{x:Bind ViewModel.TestCommandAsync.ExecutionTask, Converter={StaticResource TaskResult}, Mode=OneWay}" />
+                    <LineBreak />
+                    <Run Foreground="WhiteSmoke" Text="Exception: " />
+                    <Run Foreground="Goldenrod" Text="{x:Bind ViewModel.TestCommandAsync.ExecutionTask.Exception, Converter={StaticResource TaskException}, Mode=OneWay}" />
+                </TextBlock>
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Page>

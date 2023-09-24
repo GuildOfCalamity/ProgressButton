@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Window
+    x:Class="ProgressButtonDemo.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:ProgressButtonDemo"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="28,*">
+        <Grid
+            x:Name="AppTitleBar"
+            Grid.Row="0"
+            VerticalAlignment="Center"
+            ColumnDefinitions="Auto,Auto"
+            IsHitTestVisible="True">
+            <Image
+                Grid.Column="0"
+                Width="18"
+                Height="18"
+                Margin="8,0,0,0"
+                HorizontalAlignment="Left"
+                Source="/Assets/Win10Logo.png" />
+            <TextBlock
+                x:Name="AppTitleBarText"
+                Grid.Column="1"
+                Margin="6,0,0,0"
+                VerticalAlignment="Center"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Text="Sample App"
+                TextWrapping="NoWrap" />
+        </Grid>
+
+        <Image
+            Grid.Row="1"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Opacity="0.1"
+            Source="/Assets/Background.png"
+            Stretch="Uniform" />
+
+        <local:MainPage Grid.Row="1" />
+
+    </Grid>
+</Window>

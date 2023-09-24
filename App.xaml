@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application
+    x:Class="ProgressButtonDemo.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ProgressButtonDemo">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!--
+                === CONVERTERS ===
+            -->
+            <local:BooleanInverseConverter x:Key="BooleanInverter" />
+            <local:BooleanToVisibilityConverter x:Key="BooleanVisibility" />
+            <local:BooleanToOpacityConverter x:Key="BooleanOpacity" />
+            <local:BooleanToOpacityInverseConverter x:Key="BooleanOpacityInverse" />
+            <local:BooleanToVisibilityInverseConverter x:Key="BooleanVisibilityInverse" />
+            <local:TaskResultConverter x:Key="TaskResult" />
+            <local:TaskExceptionConverter x:Key="TaskException" />
+
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+                <!--  Other merged dictionaries here  -->
+            </ResourceDictionary.MergedDictionaries>
+            <!--  Other app resources here  -->
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
