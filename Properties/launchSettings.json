@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ProgressButtonDemo (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ProgressButtonDemo (Unpackaged)": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
