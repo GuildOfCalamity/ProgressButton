@@ -14,14 +14,21 @@
             <local:BooleanToOpacityConverter x:Key="BooleanOpacity" />
             <local:BooleanToOpacityInverseConverter x:Key="BooleanOpacityInverse" />
             <local:BooleanToVisibilityInverseConverter x:Key="BooleanVisibilityInverse" />
+            <local:EnumToBooleanConverter x:Key="EnumToBoolean" />
+            <local:DelayToDurationConverter x:Key="DelayToDuration" />
             <local:TaskResultConverter x:Key="TaskResult" />
             <local:TaskExceptionConverter x:Key="TaskException" />
 
             <ResourceDictionary.MergedDictionaries>
+
                 <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+
                 <!--  Other merged dictionaries here  -->
+
             </ResourceDictionary.MergedDictionaries>
+
             <!--  Other app resources here  -->
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

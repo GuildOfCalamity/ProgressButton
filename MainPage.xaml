@@ -8,6 +8,7 @@
     xmlns:local="using:ProgressButtonDemo"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="Transparent"
+    Loading="{x:Bind ViewModel.MainPageLoading}"
     mc:Ignorable="d">
 
     <Page.Resources>
@@ -32,13 +33,109 @@
             x:Key="SampleBrush3"
             Opacity="0.5"
             Color="#FFF2500F" />
+
+        <!--
+            === Settings Flyout ===
+        -->
+        <Flyout
+            x:Key="SettingsFlyout"
+            x:Name="SettingsFlyout"
+            OverlayInputPassThroughElement="{x:Bind SettingsBar}"
+            Placement="RightEdgeAlignedTop">
+            <Flyout.FlyoutPresenterStyle>
+                <Style TargetType="FlyoutPresenter">
+                    <Setter Property="CornerRadius" Value="5" />
+                    <Setter Property="Background" Value="#50202020" />
+                    <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+                    <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+                    <Setter Property="IsTabStop" Value="True" />
+                    <Setter Property="TabNavigation" Value="Cycle" />
+                </Style>
+            </Flyout.FlyoutPresenterStyle>
+            <StackPanel
+                Padding="20,14,20,14"
+                Background="Transparent"
+                BorderBrush="Transparent"
+                BorderThickness="2"
+                CornerRadius="4"
+                Orientation="Vertical"
+                Spacing="4">
+                <TextBlock
+                    Margin="0,0,0,6"
+                    HorizontalAlignment="Left"
+                    FontSize="16"
+                    FontWeight="Medium"
+                    Foreground="#FF76B9ED"
+                    Text="Execution Delay Time" />
+                <!--  custom divider bar  -->
+                <Grid
+                    Margin="0,0,0,6"
+                    ColumnSpacing="0"
+                    RowSpacing="0">
+                    <Rectangle
+                        Height="2"
+                        Margin="0,2,0,0"
+                        HorizontalAlignment="Stretch"
+                        RadiusX="4"
+                        RadiusY="4">
+                        <Rectangle.Fill>
+                            <LinearGradientBrush StartPoint="1,0" EndPoint="1,1">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="#FF76B9ED" />
+                                    <GradientStop Offset="0.2" Color="#6F76B9ED" />
+                                    <GradientStop Offset="1" Color="#2F76B9ED" />
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <Rectangle
+                        Height="2"
+                        Margin="0,-2,0,0"
+                        HorizontalAlignment="Stretch"
+                        Fill="Gray"
+                        RadiusX="4"
+                        RadiusY="4" />
+                </Grid>
+                <!--  delay time options  -->
+                <StackPanel Orientation="Vertical" Spacing="2">
+                    <RadioButton
+                        Command="{x:Bind ViewModel.SwitchDelayCommand}"
+                        Content="Long"
+                        GroupName="AppDelay"
+                        IsChecked="{x:Bind ViewModel.Delay, Mode=OneWay, Converter={StaticResource EnumToBoolean}, ConverterParameter=Long}">
+                        <RadioButton.CommandParameter>
+                            <x:String>Long</x:String>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    <RadioButton
+                        Command="{x:Bind ViewModel.SwitchDelayCommand}"
+                        Content="Medium"
+                        GroupName="AppDelay"
+                        IsChecked="{x:Bind ViewModel.Delay, Mode=OneWay, Converter={StaticResource EnumToBoolean}, ConverterParameter=Medium}">
+                        <RadioButton.CommandParameter>
+                            <x:String>Medium</x:String>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                    <RadioButton
+                        Command="{x:Bind ViewModel.SwitchDelayCommand}"
+                        Content="Short"
+                        GroupName="AppDelay"
+                        IsChecked="{x:Bind ViewModel.Delay, Mode=OneWay, Converter={StaticResource EnumToBoolean}, ConverterParameter=Short}">
+                        <RadioButton.CommandParameter>
+                            <x:String>Short</x:String>
+                        </RadioButton.CommandParameter>
+                    </RadioButton>
+                </StackPanel>
+            </StackPanel>
+        </Flyout>
+
     </Page.Resources>
 
     <Grid
         Margin="40"
         ColumnDefinitions="*,*"
         ColumnSpacing="10"
-        RowDefinitions="Auto,Auto,Auto,Auto"
+        RowDefinitions="Auto,Auto,Auto,Auto,Auto"
         RowSpacing="10">
 
         <StackPanel
@@ -92,6 +189,7 @@
                 ButtonCornerRadius="1"
                 ButtonEvent="{x:Bind ViewModel.ButtonClickEvent1, Mode=OneWay}"
                 ButtonText="Click Action Event"
+                EnableSpringAnimation="False"
                 ProgressBrush="{StaticResource SampleBrush2}" />
         </StackPanel>
 
@@ -108,6 +206,21 @@
                 ProgressBrush="{StaticResource SampleBrush3}"
                 ProgressValue="{x:Bind ViewModel.Amount, Mode=OneWay}" />
 
+        </StackPanel>
+
+        <!--  Flyout testing  -->
+        <StackPanel
+            x:Name="SettingsBar"
+            Grid.Row="4"
+            Grid.Column="0"
+            Orientation="Horizontal"
+            Spacing="6">
+            <Button
+                x:Name="SettingsButton"
+                Content="&#xE713;"
+                Flyout="{StaticResource SettingsFlyout}"
+                FontFamily="Segoe MDL2 Assets"
+                FontSize="16" />
         </StackPanel>
 
         <StackPanel
@@ -130,13 +243,13 @@
                 Our home-brew spinner:
             -->
             <Image
-                Width="60"
-                Height="60"
+                Width="80"
+                Height="80"
                 Margin="10"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Opacity="0.8"
-                Source="/Assets/SampleSpinner.png"
+                Source="ms-appx:///Assets/DottedCircleDarkTheme.png"
                 Visibility="{x:Bind ViewModel.IsBusy, Mode=OneWay, Converter={StaticResource BooleanVisibility}, ConverterParameter=False}">
                 <Image.Resources>
                     <Storyboard x:Name="StoryboardPath" RepeatBehavior="Forever">
@@ -146,7 +259,7 @@
                             Storyboard.TargetProperty="Angle"
                             From="0"
                             To="360"
-                            Duration="00:00:01.1">
+                            Duration="{x:Bind ViewModel.Delay, Mode=OneWay, Converter={StaticResource DelayToDuration}, ConverterParameter=0.4}">
                             <!--
                             <DoubleAnimation.EasingFunction>
                                 <CircleEase EasingMode="EaseInOut" />
@@ -156,7 +269,7 @@
                     </Storyboard>
                 </Image.Resources>
                 <Image.RenderTransform>
-                    <RotateTransform x:Name="spinnerTransform" CenterX="30" CenterY="30" />
+                    <RotateTransform x:Name="spinnerTransform" CenterX="40" CenterY="40" />
                 </Image.RenderTransform>
             </Image>
             <TextBlock
@@ -185,5 +298,7 @@
                 </TextBlock>
             </Grid>
         </StackPanel>
+
+
     </Grid>
 </Page>

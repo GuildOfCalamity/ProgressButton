@@ -38,7 +38,7 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Foreground="{TemplateBinding Foreground}">
                             <ContentPresenter.BackgroundTransition>
-                                <BrushTransition Duration="0:0:0.24" />
+                                <BrushTransition Duration="0:0:0.20" />
                             </ContentPresenter.BackgroundTransition>
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroup x:Name="CommonStates">
@@ -92,10 +92,10 @@
 
     </UserControl.Resources>
 
-    <Grid>
+    <Grid x:Name="ThisGrid">
         <!--
             Some of the properties will be set through the styler above, however, in the
-            hat the styler is removed I am reinforcing them in the control below.
+            event that the styler is removed I am reinforcing them in the control below.
         -->
         <Button
             x:Name="ThisButton"
@@ -110,7 +110,11 @@
             IsEnabled="{x:Bind ButtonBusy, Mode=OneWay, Converter={StaticResource BooleanInverter}}" />
         <ProgressBar
             x:Name="ThisProgress"
+            Width="{Binding ElementName=ThisButton, Path=ActualWidth, Mode=OneWay}"
+            Height="{Binding ElementName=ThisButton, Path=ActualHeight, Mode=OneWay}"
             MinHeight="30"
+            HorizontalAlignment="{Binding ElementName=ThisButton, Path=HorizontalAlignment, Mode=OneWay}"
+            VerticalAlignment="{Binding ElementName=ThisButton, Path=VerticalAlignment, Mode=OneWay}"
             BorderBrush="Transparent"
             BorderThickness="0"
             CornerRadius="{x:Bind ButtonCornerRadius}"

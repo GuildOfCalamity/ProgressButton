@@ -17,10 +17,16 @@ public partial class MainPageViewModel : ObservableObject
 	CancellationTokenSource? _cts;
 
 	[ObservableProperty]
+	DelayTime _delay;
+
+    [ObservableProperty]
 	bool _isBusy = false;
 
 	[ObservableProperty]
 	bool _isAsync = false;
+
+	[ObservableProperty]
+	bool _pageLoaded = false;
 
 	[ObservableProperty]
 	double _amount = 0;
@@ -35,7 +41,8 @@ public partial class MainPageViewModel : ObservableObject
 	string _status = string.Empty;
 
 	public ICommand TestCommand { get; }
-	public IAsyncRelayCommand TestCommandAsync { get; }
+    public ICommand SwitchDelayCommand { get; }
+    public IAsyncRelayCommand TestCommandAsync { get; }
 	public Action? ButtonClickEvent1 { get; set; }
 	public Action? ButtonClickEvent2 { get; set; }
 
@@ -54,7 +61,7 @@ public partial class MainPageViewModel : ObservableObject
 				Status = $"Doing something with '{param}'…";
 			else
 				Status = $"Parameter was empty";
-			await Task.Delay(5000);
+			await Task.Delay(1000 * (int)Delay);
 			Status = $"Complete";
 			IsBusy = false;
 		});
@@ -75,13 +82,34 @@ public partial class MainPageViewModel : ObservableObject
 			}
 		});
 
-		// Action example for our ProgressButton.
-		ButtonClickEvent1 += async () =>
+        // Configure delay time command.
+        SwitchDelayCommand = new RelayCommand<string>(async (param) =>
+        {
+            if (!string.IsNullOrEmpty(param))
+            {
+                if (Enum.IsDefined(typeof(DelayTime), param))
+                {
+                    await Task.Delay(10);
+                    Delay = (DelayTime)Enum.Parse(typeof(DelayTime), param);
+                }
+                else
+                {
+                    Debug.WriteLine($"Parameter is not of type '{nameof(DelayTime)}'.");
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Parameter was empty, nothing to do.");
+            }
+        });
+
+        // Action example for our ProgressButton.
+        ButtonClickEvent1 += async () =>
 		{
 			IsAsync = false;
 			IsBusy = true;
 			Status = $"Doing something…";
-			await Task.Delay(5000);
+			await Task.Delay(1000 * (int)Delay);
 			Status = $"Complete";
 			IsBusy = false;
 		};
@@ -96,7 +124,7 @@ public partial class MainPageViewModel : ObservableObject
 			for (int i = 0; i < 100; i++)
 			{
 				Amount += 1;
-				await Task.Delay(20);
+				await Task.Delay(10 * (int)Delay);
 			}
 			Status = $"Finished";
 			IsBusy = false;
@@ -124,7 +152,7 @@ public partial class MainPageViewModel : ObservableObject
 
 		try
 		{
-			await Task.Delay(5000, token);
+			await Task.Delay(1000 * (int)Delay, token);
 		}
 		catch (TaskCanceledException) 
 		{
@@ -135,4 +163,12 @@ public partial class MainPageViewModel : ObservableObject
 
 		return Status = $"Complete";
 	}
+
+	/// <summary>
+	/// {x:Bind} allows us to bind page events directly into our ViewModel.
+	/// </summary>
+    public void MainPageLoading(Microsoft.UI.Xaml.FrameworkElement sender, object args)
+    {
+		Delay = DelayTime.Medium;
+    }
 }

@@ -12,6 +12,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
 	<Version>1.0.0.0</Version>
 	<Nullable>enable</Nullable>
+    <!-- 
+      Only icon formatted images are allowed for this property. 
+    -->
 	<ApplicationIcon>Assets/Win10Logo.ico</ApplicationIcon>
 	<!-- 
       WindowsPackageType defines whether your app is packaged (MSIX) or unpackaged (None) 
@@ -60,6 +63,8 @@
 	  <DefineConstants>IS_UNPACKAGED</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Assets\DottedCircleDarkTheme.png" />
+    <None Remove="Assets\DottedCircleLightTheme.png" />
     <None Remove="Assets\SampleSpinner.png" />
     <None Remove="Assets\SpinnerRing.png" />
     <None Remove="Assets\Win10Background.png" />
@@ -96,6 +101,14 @@
     <ProjectCapability Include="Msix" />
   </ItemGroup>
   <ItemGroup>
+    <Content Update="Assets\DottedCircleDarkTheme.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Assets\DottedCircleLightTheme.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -113,6 +126,24 @@
   -->
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NoWarn>1701;1702;CS1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <NoWarn>1701;1702;CS1591</NoWarn>
   </PropertyGroup>
 
   <!-- 

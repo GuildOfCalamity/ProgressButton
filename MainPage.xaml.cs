@@ -21,6 +21,8 @@ public sealed partial class MainPage : Page
 
 	void MainPage_Loaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
 	{
+		ViewModel.PageLoaded = true;
+
 		if (App.AnimationsEffectsEnabled)
 			StoryboardPath.Begin();
 	}

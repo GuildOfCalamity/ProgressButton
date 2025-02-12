@@ -71,10 +71,9 @@ public partial class App : Application
         var AppWin = GetAppWindow(_window);
         if (AppWin != null)
         {
-            AppWin.Closing += (s, e) =>
-            {
-                App.IsClosing = true;
-            };
+            // Unfortunately MS decided to remove the closing event from the
+            // Window class, but we can get it back using the AppWindow class.
+            AppWin.Closing += (s, e) => { App.IsClosing = true; };
 
             // NOTE: png to ico converter https://www.img2go.com/convert/png-to-ico
 
